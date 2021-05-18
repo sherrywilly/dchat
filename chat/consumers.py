@@ -4,12 +4,13 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Message
 from asgiref.sync import async_to_sync, sync_to_async
+from chat.models import Room
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def fetch_messages(self, data):
-        _x = sync_to_async(Message.last_10_messages)()
+        _x = sync_to_async(Message.objects.filter)(room__rid=data['room'])
         messages = await _x
         # print(messages)
         content = {
@@ -26,9 +27,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         auther_user = sync_to_async(User.objects.get)(username=author)
         x = await auther_user
         print(x.username)
+        _xa = str(data['room'])
+        room = sync_to_async(Room.objects.get)(rid=_xa)
+        u = await room
         msg = sync_to_async(Message.objects.create)(
             author_id=x.id,
-            content=data['message']
+            content=data['message'],
+            room_id=u.id
         )
         message = await msg
         content = {

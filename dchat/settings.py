@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'chat',
     'channels',
+    'company',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +73,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'dchat.wsgi.application'
 
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+)
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 

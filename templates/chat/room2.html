@@ -8,7 +8,7 @@
   </head>
   <body>
     <p>hbvchckhg</p>
-    <p>{{request.session.room}}</p>
+    <p>{{room_name}}</p>
     <textarea id="chat-log" cols="100" rows="20"></textarea><br />
     <input id="chat-message-input" type="text" size="100" /><br />
     <input id="chat-message-submit" type="button" value="Send" />
@@ -60,16 +60,14 @@
             message: message,
             from: "{{request.user}}",
             command: "new_messages",
-            room: "{{request.session.room}}",
+            room: "{{room_name}}",
           })
         );
         messageInputDom.value = "";
       };
 
       function fetchMessages() {
-        chatSocket.send(
-          JSON.stringify({ command: "fetch_messages", room: "{{request.session.room}}" })
-        );
+        chatSocket.send(JSON.stringify({ command: "fetch_messages" }));
       }
     </script>
   </body>
